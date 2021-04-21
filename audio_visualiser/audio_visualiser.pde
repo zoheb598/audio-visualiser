@@ -23,6 +23,8 @@ void setup()
 float theta = 0;
 float speed = -0.01f;
 float lerpedAverage = 0;
+float randomX = width/2;
+float randomY = height/2;
 Minim minim;
 AudioBuffer ab;
 AudioPlayer ap;
@@ -46,12 +48,18 @@ void cube(){
   strokeWeight(3);
   noFill();
   lights();
-  translate(width / 2, height / 2, 0);
+  translate(randomX, randomY, 0);
   rotateX(theta);
   rotateY(theta);
   rotateZ(theta);
 
   box(100 + (lerpedAverage * 500));
   theta += speed;
+
   
+}
+
+void keyReleased(){
+    randomX = random(800);
+    randomY = random(800);
 }
