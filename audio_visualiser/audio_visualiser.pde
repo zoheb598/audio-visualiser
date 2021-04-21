@@ -69,7 +69,7 @@ void cube() {
 
 void miniCube() {
   pushMatrix();
-  translate(gradualX, gradualY, 0);
+  translate(gradualX, gradualY, randomZ);
   rotateX(theta*5);
   rotateY(theta*5);
   rotateZ(theta);
@@ -82,10 +82,10 @@ void keyReleased(){
     randomX = random(800);
     randomY = random(800);
     randomZ = random(200);
-  if (gradualX != randomX) {
+  if(gradualX != randomX) {
     gradualX = lerp(gradualX, randomX, 0.05);
   }
-  if(gradualX != randomY){
+  if(gradualY != randomY){
    gradualY = lerp(gradualY, randomY, 0.05);
   }
 }
