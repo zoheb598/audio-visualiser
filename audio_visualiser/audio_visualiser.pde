@@ -13,10 +13,10 @@ void setup()
   colorMode(HSB);
 
   minim = new Minim(this);
-  
+
   ap = minim.loadFile("RUDE - Eternal Youth.mp3", width); //load song
   ap.play();
-  
+
   ab = ap.mix;
 }
 
@@ -35,10 +35,9 @@ AudioPlayer ap;
 void draw() {
   cube();
   miniCube();
-
 }
 
-void cube(){
+void cube() {
   float sum = 0;
   for (int i = 0; i < ab.size(); i ++)
   {
@@ -59,10 +58,10 @@ void cube(){
   rotateZ(theta);
   box(100 + (lerpedAverage * 500));
   popMatrix();
-  theta += speed; 
+  theta += speed;
 }
 
-void miniCube(){
+void miniCube() {
   pushMatrix();
   translate(gradualX, gradualY, 0);
   rotateX(theta*5);
@@ -70,13 +69,16 @@ void miniCube(){
   rotateZ(theta);
   box(10 + (lerpedAverage *500)); 
   popMatrix();
-      if(gradualX != randomX){
-      gradualX++;
-    }
+  if (gradualX != randomX) {
+    gradualX = lerp(gradualX, randomX, .05);
+  }
+  if(gradualX != randomY){
+   gradualY = lerp(gradualY, randomY, .05);
+  }
 }
 
-void keyReleased(){
-    randomX = random(800);
-    randomY = random(800);
-    randomZ = random(200);
+void keyReleased() {
+  randomX = random(800);
+  randomY = random(800);
+  randomZ = random(200);
 }
