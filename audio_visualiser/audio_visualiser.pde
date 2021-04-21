@@ -32,9 +32,23 @@ Minim minim;
 AudioBuffer ab;
 AudioPlayer ap;
 
+float z = 0;
+float moveSpeed = 1;
+
+
 void draw() {
   cube();
   miniCube();
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+=======
+>>>>>>> d108191337deb95355a129e17de66e1c93f7cf5e
+=======
+>>>>>>> d108191337deb95355a129e17de66e1c93f7cf5e
+>>>>>>> Stashed changes
 }
 
 void cube() {
@@ -56,12 +70,53 @@ void cube() {
   rotateX(theta);
   rotateY(theta);
   rotateZ(theta);
+<<<<<<< Updated upstream
   box(100 + (lerpedAverage * 500));
   popMatrix();
   theta += speed;
 }
 
 void miniCube() {
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+  box(100 + (lerpedAverage * 600));
+  theta += speed;
+  
+  pushMatrix();
+  translate(width / 4, height / 4, 0);
+  sphere(80 + (lerpedAverage * 200));
+  popMatrix();
+  theta += speed;
+  z -= moveSpeed;
+  
+ 
+=======
+  box(100 + (lerpedAverage * 500));
+  popMatrix();
+  theta += speed; 
+}
+
+void miniCube(){
+=======
+  box(100 + (lerpedAverage * 500));
+  popMatrix();
+  theta += speed;
+}
+
+void miniCube() {
+>>>>>>> d108191337deb95355a129e17de66e1c93f7cf5e
+=======
+  box(100 + (lerpedAverage * 500));
+  popMatrix();
+  theta += speed;
+}
+
+void miniCube() {
+>>>>>>> d108191337deb95355a129e17de66e1c93f7cf5e
+>>>>>>> Stashed changes
   pushMatrix();
   translate(gradualX, gradualY, 0);
   rotateX(theta*5);
@@ -69,6 +124,24 @@ void miniCube() {
   rotateZ(theta);
   box(10 + (lerpedAverage *500)); 
   popMatrix();
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+      if(gradualX != randomX){
+      gradualX++;
+    }
+}
+
+void keyReleased(){
+    randomX = random(800);
+    randomY = random(800);
+    randomZ = random(200);
+>>>>>>> bf944ab2d951ead1c42636eef2db1e258d45b973
+=======
+=======
+>>>>>>> d108191337deb95355a129e17de66e1c93f7cf5e
+>>>>>>> Stashed changes
   if (gradualX != randomX) {
     gradualX = lerp(gradualX, randomX, .05);
   }
@@ -81,4 +154,11 @@ void keyReleased() {
   randomX = random(800);
   randomY = random(800);
   randomZ = random(200);
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+>>>>>>> d108191337deb95355a129e17de66e1c93f7cf5e
+=======
+>>>>>>> d108191337deb95355a129e17de66e1c93f7cf5e
+>>>>>>> Stashed changes
 }
