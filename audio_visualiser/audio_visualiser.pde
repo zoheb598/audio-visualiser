@@ -25,12 +25,16 @@ float speed = -0.01f;
 float lerpedAverage = 0;
 float randomX = width/2;
 float randomY = height/2;
+float randomZ = 0;
+float gradualX = 0;
+float gradualY = 0;
 Minim minim;
 AudioBuffer ab;
 AudioPlayer ap;
 
 void draw() {
   cube();
+  miniCube();
 
 }
 
@@ -40,7 +44,7 @@ void cube(){
   {
     sum += abs(ab.get(i));
   }
-  print('\n', sum);
+  //print('\n', sum);
   float average = sum / (float) ab.size();
   lerpedAverage = lerp(lerpedAverage, average, 0.1f);
   stroke(sum, 255, 255);
@@ -48,18 +52,31 @@ void cube(){
   strokeWeight(3);
   noFill();
   lights();
+  pushMatrix();
   translate(width/2, height/2, 0);
   rotateX(theta);
   rotateY(theta);
   rotateZ(theta);
-
   box(100 + (lerpedAverage * 500));
-  theta += speed;
+  popMatrix();
+  theta += speed; 
+}
 
-  
+void miniCube(){
+  pushMatrix();
+  translate(gradualX, gradualY, 0);
+  rotateX(theta*5);
+  rotateY(theta*5);
+  rotateZ(theta);
+  box(10 + (lerpedAverage *500)); 
+  popMatrix();
+      if(gradualX != randomX){
+      gradualX++;
+    }
 }
 
 void keyReleased(){
     randomX = random(800);
     randomY = random(800);
+    randomZ = random(200);
 }
