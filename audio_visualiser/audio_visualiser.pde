@@ -39,6 +39,7 @@ float moveSpeed = 1;
 void draw() {
   cube();
   miniCube();
+  ring();
 }
 
 void cube() {
@@ -76,6 +77,14 @@ void miniCube() {
   box(10 + (lerpedAverage *500)); 
   popMatrix();
 
+}
+
+void ring(){
+    stroke(100, 255, 255);
+    strokeWeight(3);
+    ellipseMode(CENTER);
+    ellipse(mouseX, mouseY, 50 + (lerpedAverage * 600), 50 + (lerpedAverage * 600));
+    
 }
 
 void keyReleased(){
