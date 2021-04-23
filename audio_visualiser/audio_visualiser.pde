@@ -9,7 +9,7 @@ import ddf.minim.ugens.*;
 
 void setup()
 {
-  size(800, 800, P3D); //set to 3d render
+  size(1200, 1080, P3D); //set to 3d render
   colorMode(HSB);
 
   minim = new Minim(this);
@@ -23,11 +23,12 @@ void setup()
 float theta = 0;
 float speed = -0.01f;
 float lerpedAverage = 0;
-float randomX = width/2;
-float randomY = height/2;
-float randomZ = 0;
+float randomX = 0;
+float randomY = 0;
 float gradualX = 0;
 float gradualY = 0;
+float mirrorGradualX = 0;
+float mirrorGradualY = 0;
 Minim minim;
 AudioBuffer ab;
 AudioPlayer ap;
@@ -69,13 +70,44 @@ void cube() {
 
 
 void miniCube() {
+  //cube 1
   pushMatrix();
-  translate(gradualX, gradualY, randomZ);
+  translate(gradualX, gradualY, 0);
   rotateX(theta*5);
   rotateY(theta*5);
   rotateZ(theta);
-  box(10 + (lerpedAverage *500)); 
+  box(1 + (lerpedAverage *500)); 
   popMatrix();
+  //cube 2
+  pushMatrix();
+  translate(gradualY, gradualX, 0);
+  rotateX(theta*5);
+  rotateY(theta*5);
+  rotateZ(theta);
+  box(1 + (lerpedAverage *500)); 
+  popMatrix();
+  //cube 3
+  pushMatrix();
+  translate(gradualY, gradualX, 0);
+  rotateX(theta*5);
+  rotateY(theta*5);
+  rotateZ(theta);
+  box(1 + (lerpedAverage *500)); 
+  popMatrix();
+  //cube 4
+  pushMatrix();
+  translate(gradualY, gradualX, 0);
+  rotateX(theta*5);
+  rotateY(theta*5);
+  rotateZ(theta);
+  box(1 + (lerpedAverage *500)); 
+  popMatrix();
+  if(gradualX != randomX) {
+    gradualX = lerp(gradualX, randomX, 0.05);
+  }
+  if(gradualY != randomY){
+   gradualY = lerp(gradualY, randomY, 0.05);
+  }
 
 }
 
@@ -88,13 +120,8 @@ void ring(){
 }
 
 void keyReleased(){
-    randomX = random(800);
-    randomY = random(800);
-    randomZ = random(200);
-  if(gradualX != randomX) {
-    gradualX = lerp(gradualX, randomX, 0.05);
-  }
-  if(gradualY != randomY){
-   gradualY = lerp(gradualY, randomY, 0.05);
-  }
+    randomX = random(width);
+    randomY = random(height);
+    print(randomX, ' ');
+    print(randomY);
 }
