@@ -15,6 +15,7 @@ FFT fft;
 
 void setup()
 {
+  timeStart = millis();
   size(1024, 1080, P3D); //set to 3d render
   colorMode(HSB);
 
@@ -37,7 +38,11 @@ float gradualX = 0;
 float gradualY = 0;
 float mirrorGradualX = 0;
 float mirrorGradualY = 0;
-boolean bass = true;
+
+boolean bass = false;
+int timeStart;
+int timeElapsed;
+int bassCount = 0;
 
 float z = 0;
 float moveSpeed = 1;
@@ -46,6 +51,7 @@ float lerpedFrequency = 0;
 
 
 void draw() {
+  timeElapsed = millis() - timeStart;
   cube();
   miniCube();
   ring();
@@ -94,13 +100,18 @@ void miniCube() {
   float freq = fft.indexToFreq(highestBin);
   text("Freq: " + freq, 100, 200);
   //if bass
-  if(freq < 42 || freq > 44){
-  bass = true;  
-  }
-  if(bass && freq > 42 && freq < 44){
+  if(freq > 42 && freq < 44 && bass){
   randomX = random(width);
   randomY = random(height);
+  //timeStart = millis();
   bass = false;
+  }
+  if(freq > 44){
+   bassCount++;  
+  }
+  if(bassCount > 5){
+    bass = true;
+    bassCount = 0;
   }
   //cube 1
   pushMatrix();
