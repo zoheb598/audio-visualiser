@@ -7,9 +7,15 @@ import ddf.minim.signals.*;
 import ddf.minim.spi.*;
 import ddf.minim.ugens.*;
 
+Minim minim;
+AudioBuffer ab;
+AudioPlayer ap;
+
+FFT fft;
+
 void setup()
 {
-  size(1200, 1080, P3D); //set to 3d render
+  size(1024, 1080, P3D); //set to 3d render
   colorMode(HSB);
 
   minim = new Minim(this);
@@ -18,6 +24,8 @@ void setup()
   ap.play();
 
   ab = ap.mix;
+
+  fft = new FFT(width, 44100);
 }
 
 float theta = 0;
@@ -29,12 +37,12 @@ float gradualX = 0;
 float gradualY = 0;
 float mirrorGradualX = 0;
 float mirrorGradualY = 0;
-Minim minim;
-AudioBuffer ab;
-AudioPlayer ap;
+boolean bass = true;
 
 float z = 0;
 float moveSpeed = 1;
+
+float lerpedFrequency = 0;
 
 
 void draw() {
@@ -64,19 +72,43 @@ void cube() {
   rotateZ(theta);
   box(100 + (lerpedAverage * 500));
   popMatrix();
-  
+
   theta += speed;
 }
 
 
 void miniCube() {
+  //frequncy check
+  fft.window(FFT.HAMMING);
+  fft.forward(ab);
+  int highestBin = -1;
+  float highest = 0;
+  for (int i = 0; i < fft.specSize(); i ++)
+  {
+    if (fft.getBand(i) > highest)
+    {
+      highest = fft.getBand(i);
+      highestBin = i;
+    }
+  }
+  float freq = fft.indexToFreq(highestBin);
+  text("Freq: " + freq, 100, 200);
+  //if bass
+  if(freq < 42 || freq > 44){
+  bass = true;  
+  }
+  if(bass && freq > 42 && freq < 44){
+  randomX = random(width);
+  randomY = random(height);
+  bass = false;
+  }
   //cube 1
   pushMatrix();
   translate(gradualX, gradualY, 0);
   rotateX(theta*5);
   rotateY(theta*5);
   rotateZ(theta);
-  box(1 + (lerpedAverage *500)); 
+  box(10 + (lerpedAverage *200)); 
   popMatrix();
   //cube 2
   pushMatrix();
@@ -84,44 +116,40 @@ void miniCube() {
   rotateX(theta*5);
   rotateY(theta*5);
   rotateZ(theta);
-  box(1 + (lerpedAverage *500)); 
+  box(10 + (lerpedAverage *200)); 
   popMatrix();
   //cube 3
   pushMatrix();
-  translate(gradualY, gradualX, 0);
+  translate(height-gradualX, width-gradualY, 0);
   rotateX(theta*5);
   rotateY(theta*5);
   rotateZ(theta);
-  box(1 + (lerpedAverage *500)); 
+  box(10 + (lerpedAverage *200)); 
   popMatrix();
   //cube 4
   pushMatrix();
-  translate(gradualY, gradualX, 0);
+  translate(height-gradualY, width-gradualX, 0);
   rotateX(theta*5);
   rotateY(theta*5);
   rotateZ(theta);
-  box(1 + (lerpedAverage *500)); 
+  box(10 + (lerpedAverage *200)); 
   popMatrix();
-  if(gradualX != randomX) {
+  if (gradualX != randomX) {
     gradualX = lerp(gradualX, randomX, 0.05);
   }
-  if(gradualY != randomY){
-   gradualY = lerp(gradualY, randomY, 0.05);
+  if (gradualY != randomY) {
+    gradualY = lerp(gradualY, randomY, 0.05);
   }
-
 }
 
-void ring(){
-    stroke(100, 255, 255);
-    strokeWeight(3);
-    ellipseMode(CENTER);
-    ellipse(mouseX, mouseY, 50 + (lerpedAverage * 600), 50 + (lerpedAverage * 600));
-    
+void ring() {
+  stroke(100, 255, 255);
+  strokeWeight(3);
+  ellipseMode(CENTER);
+  ellipse(mouseX, mouseY, 50 + (lerpedAverage * 600), 50 + (lerpedAverage * 600));
 }
 
-void keyReleased(){
-    randomX = random(width);
-    randomY = random(height);
-    print(randomX, ' ');
-    print(randomY);
+void keyReleased() {
+  randomX = random(width);
+  randomY = random(height);
 }
