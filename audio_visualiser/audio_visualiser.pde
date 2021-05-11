@@ -21,12 +21,23 @@ void setup()
 
   minim = new Minim(this);
 
-  ap = minim.loadFile("RUDE - Eternal Youth.mp3", width); //load song
+  ap = minim.loadFile("Minecraft Acid Interstate V3.mp3", width); //load song
   ap.play();
 
   ab = ap.mix;
 
   fft = new FFT(width, 44100);
+  
+  //bubble stuff
+ for(int i=0; i<bubbleY.length; i++){
+   bubbleY[i] = int(random(height));
+ }//fill all the spaces with random numbers from -500 to 0. This is to put the snow at random heights
+ for(int i=0; i<bubbleX.length; i++){
+   bubbleX[i] = int(random(width));
+ }//fill the array with 100 random numbers to place snow randomly across the screen
+ for(int i=0; i<bubbleSize.length; i++){
+   bubbleSize[i] = random(3, 10);//fill array to get random snow sizes
+ }
 }
 
 float theta = 0;
@@ -55,6 +66,7 @@ void draw() {
   cube();
   miniCube();
   ring();
+  bubbles();
 }
 
 void cube() {
@@ -78,6 +90,14 @@ void cube() {
   rotateZ(theta);
   box(100 + (lerpedAverage * 500));
   popMatrix();
+  //inside box
+  pushMatrix();
+  translate(width/2, height/2, 0);
+  rotateX(theta*2);
+  rotateY(theta*2);
+  rotateZ(theta*2);
+  box(50 + (lerpedAverage * 500));
+  popMatrix();
 
   theta += speed;
 }
@@ -98,7 +118,7 @@ void miniCube() {
     }
   }
   float freq = fft.indexToFreq(highestBin);
-  text("Freq: " + freq, 100, 200);
+  stroke(bassCount*10, 255, 255);
   //if bass
   if(freq > 42 && freq < 44 && bass){
   randomX = random(width);
@@ -109,7 +129,7 @@ void miniCube() {
   if(freq > 44){
    bassCount++;  
   }
-  if(bassCount > 5){
+  if(bassCount > 20){
     bass = true;
     bassCount = 0;
   }
@@ -157,10 +177,30 @@ void ring() {
   stroke(100, 255, 255);
   strokeWeight(3);
   ellipseMode(CENTER);
-  ellipse(mouseX, mouseY, 50 + (lerpedAverage * 600), 50 + (lerpedAverage * 600));
+  ellipse(mouseX, mouseY, 10 + (lerpedAverage * 600), 10 + (lerpedAverage * 600));
 }
 
-void keyReleased() {
-  randomX = random(width);
-  randomY = random(height);
+int bubbleCount = 100;
+float[] bubbleY = new float[bubbleCount];//create snowCount amount of spaces for snowY array
+float[] bubbleX = new float[bubbleCount];
+float[] bubbleSize = new float[bubbleCount];
+
+void bubbles(){
+  for(int i=0;i<bubbleCount;i++){
+   stroke(bubbleY[i]/5, 255, 255);
+   circle(bubbleX[i], bubbleY[i], bubbleSize[i]*lerpedAverage*10);
+       bubbleY[i] = bubbleY[i]+bubbleSize[i]/3;//bigger snow falls faster
+    if(bubbleY[i] > height){//everytime the snow goes offscreen it is randomly placed somewhere above the screen
+      bubbleY[i] = int(random(-height, 0));
+      //snowBuild += 0.05;//when snow reaches the bottom the rectangle gets bigger so it looks like snow is pilling up
+    }
+    if(bubbleX[i] > width){//if the snow goes offscreen to the right then bring it back to the left
+      bubbleX[i] = 0;
+    }
+    if(bubbleX[i] < 0){
+      bubbleX[i] = width;
+    }
+    
+  }
+  
 }
